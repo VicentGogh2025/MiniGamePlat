@@ -1,0 +1,151 @@
+.page {
+  position: relative;
+  width: 750px;
+  height: 1624px;
+  overflow: hidden;
+}
+
+.box_1 {
+  background-color: rgba(13, 12, 3, 1);
+  height: 1624px;
+}
+
+.image_1 {
+  width: 750px;
+  height: 88px;
+}
+
+.box_3 {
+  padding: 43px 276px 53px 30px;
+}
+
+.group_4 {
+  width: 444px;
+}
+
+.block_2 {
+  background-image: url(./img/0005b2f9b35b4f61a8d4e23fef813571_mergeImage.png);
+  width: 42px;
+  height: 42px;
+}
+
+.text_1 {
+  overflow-wrap: break-word;
+  color: rgba(215, 215, 215, 1);
+  font-size: 32px;
+  letter-spacing: 1px;
+  font-family: huangyinqizhaopai;
+  font-weight: NaN;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 37px;
+  margin-top: 3px;
+}
+
+.block_3 {
+  position: relative;
+  width: 690px;
+  background: url(./img/SketchPng9b30084a75142333de9d7be831a7d88e9d327fae581c842ae7e33ae6f7c68a01.png)
+    100% no-repeat;
+  background-size: 100% 100%;
+  align-self: center;
+  margin-top: -1px;
+  padding: 40px 30px 67px 30px;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(189, 189, 189, 1);
+  font-size: 28px;
+  font-family: huangyinqizhaopai;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 32px;
+  margin-right: 518px;
+}
+
+.image-wrapper_1 {
+  background-color: rgba(255, 255, 255, 0.13);
+  border-radius: 17px;
+  margin-top: 20px;
+  padding: 27px 20px 28px 581px;
+}
+
+.image_2 {
+  width: 29px;
+  height: 20px;
+}
+
+.text_3 {
+  overflow-wrap: break-word;
+  color: rgba(189, 189, 189, 1);
+  font-size: 28px;
+  font-family: huangyinqizhaopai;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 32px;
+  margin: 40px 490px 0 0;
+}
+
+.image-wrapper_2 {
+  background-color: rgba(255, 255, 255, 0.13);
+  border-radius: 17px;
+  margin-top: 20px;
+  padding: 27px 20px 27px 581px;
+}
+
+.label_1 {
+  width: 29px;
+  height: 21px;
+}
+
+.text_4 {
+  overflow-wrap: break-word;
+  color: rgba(189, 189, 189, 1);
+  font-size: 28px;
+  font-family: huangyinqizhaopai;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 32px;
+  margin: 40px 518px 0 0;
+}
+
+.label_2 {
+  width: 29px;
+  height: 21px;
+  margin: 47px 20px 0 581px;
+}
+
+.box_2 {
+  background-color: rgba(255, 255, 255, 0.13);
+  border-radius: 17px;
+  position: absolute;
+  left: 30px;
+  top: 426px;
+  width: 630px;
+  height: 75px;
+}
+
+.box_4 {
+  padding: 50px 96px 737px 96px;
+}
+
+.text-wrapper_1 {
+  background-color: rgba(255, 184, 0, 1);
+  border-radius: 36px;
+  padding: 20px 247px 15px 247px;
+}
+
+.text_5 {
+  overflow-wrap: break-word;
+  color: rgba(162, 64, 0, 1);
+  font-size: 32px;
+  font-family: huangyinqizhaopai;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 37px;
+}

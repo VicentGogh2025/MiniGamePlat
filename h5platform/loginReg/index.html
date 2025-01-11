@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./flexible.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/InitConfig.js"></script>
+    <link rel="stylesheet" type="text/css" href="./common.css" />
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+    <!-- <script>
+      $(document).ready(function(){
+        var isShow;
+        var selectedLang;
+       $.get("https://api.luckybooms.com/api/config/languages",function(data,status){
+        if(data.code != 200){
+          alert("加载语言项错误，请刷新重试");
+          return;
+        }
+       // alert("数据: " + data.code + "\n状态: " + status);
+       var dArray = data.data;
+      
+        dArray.forEach(element => {
+          var langStr = element.languagecode;
+          var opStr = "<option value='"+langStr+"'>"+langStr+"</option>";
+          console.log("opStr==="+opStr)
+          $("#lanSelect").append(opStr)
+        });
+
+       });
+       $("#lanSelect").on('change',function(){
+          selectedLang = $(this).val();
+          $("#LocationSelectorBtn").show();
+          $("#lanSelect").hide();
+          isShow = false;
+        //  alert('选中的值是：' + selectedLang);
+       });
+
+        $("#LocationSelectorBtn").click(function(){
+          if(isShow){
+             $("#LocationSelectorBtn").show();
+            $("#lanSelect").hide();
+            isShow = false;
+            
+          }
+          else{
+             $("#LocationSelectorBtn").hide();
+            $("#lanSelect").show();
+            
+            isShow = true;
+          }
+        });
+
+
+      })
+    </script> -->
+  </head>
+
+  <body>
+    <div class="page flex-col">
+      <div class="box_1 flex-col">
+      
+        <div class="block_1 flex-col">
+          <div class="image-wrapper_1 flex-row justify-between">
+            <button class="label_1" style="background-image: url(./img/SketchPng9316af42142d6a105ab78f3c430940e24188f03894268fdacd24ba0d0f476f3f.png);background-repeat:no-repeat;" id="IndexBtn"></button>
+<button class="label_2" style="background-image: url(./img/SketchPng48d1abe95618dd2e8faa0ca8a2d9d20aae296b423ff4fc5db196100127dbbed4.png);background-repeat:no-repeat;" id="LocationSelectorBtn"></button>
+<!-- <div> -->
+<select id="lanSelect" hidden="true"></select>
+            <!-- <img
+              class="label_1"
+              referrerpolicy="no-referrer"
+              src="./img/SketchPng9316af42142d6a105ab78f3c430940e24188f03894268fdacd24ba0d0f476f3f.png"
+            /> -->
+            <!-- <div style="text-align: center;"> -->
+              <!-- <button class="label_1" style="background-image: url(./img/SketchPng9316af42142d6a105ab78f3c430940e24188f03894268fdacd24ba0d0f476f3f.png);background-repeat:no-repeat;" id="IndexBtn"></button>
+            <button class="label_2" style="background-image: url(./img/SketchPng48d1abe95618dd2e8faa0ca8a2d9d20aae296b423ff4fc5db196100127dbbed4.png);background-repeat:no-repeat;" id="LocationSelectorBtn"></button> -->
+            <!-- <div> -->
+              <!-- <select id="lanSelect" hidden="true"></select> -->
+            
+            <!-- </div> -->
+            <!-- <label  style="display: block;font-size:small;color: white;">cn</label> -->
+
+          <!-- </div> -->
+            <!-- <label>中国</label> -->
+            <!-- <img
+              class="label_2"
+              referrerpolicy="no-referrer"
+              src="./img/SketchPng48d1abe95618dd2e8faa0ca8a2d9d20aae296b423ff4fc5db196100127dbbed4.png"
+            /> -->
+            
+          </div>
+          <div class="block_2 flex-row">
+            <div class="group_1 flex-col">
+              <div class="box_2 flex-col">
+                <div class="section_1 flex-col">
+                  <div class="box_3 flex-col">
+                    <div class="image-wrapper_2 flex-row justify-between">
+                      <img
+                        class="image_2"
+                        referrerpolicy="no-referrer"
+                        src="./img/SketchPng156fbd7b9035dfde655a7b965d8be8a2d2d1ec654047a24cf964a47e77ba0baa.png"
+                      />
+                      <img
+                        class="label_3"
+                        referrerpolicy="no-referrer"
+                        src="./img/SketchPng5e277a5d2c56622c28ac5e41d92f74dd3adfaad3fbde0d1b684d1a115275c688.png"
+                      />
+                    </div>
+                    <img
+                      class="image_3"
+                      referrerpolicy="no-referrer"
+                      src="./img/SketchPng895a283df93c64441e0ed3982921af70474cb5f0ce5554ec3b210b9b0c5b3307.png"
+                    />
+                    <div class="image-wrapper_3 flex-col">
+                      <img
+                        class="image_4"
+                        referrerpolicy="no-referrer"
+                        src="./img/SketchPng16e19e927900f716b220258ae6681adda6e29424e1992dc09fba79bccc2b58e3.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span  id="tip_span" style="text-align: center;color: red;"></span>
+          <div class="block_3 flex-row">
+            <div class="section_2 flex-row">
+              <img
+                class="label_4"
+                referrerpolicy="no-referrer"
+                src="./img/SketchPngefd37033149bff8b1da524dd80cebce52ad0ce265b4846d1d693767fa3e9d2e6.png"
+              />
+              <!-- <span class="text_1">test11111111</span> -->
+              <span class="text_1"><input id="input_email" style="width: 100%;height: 50px;font-size: 30pt;" placeholder="输入邮箱"/> </span>
+
+              <!-- <img
+              class="label_5"
+                referrerpolicy="no-referrer"
+                src="./img/SketchPng66fcf2b5c2f9bb1b01d1a0829e9c92597acf5f2a45fa17020a3e1633a3a80450.png"
+              /> -->
+
+            </div>
+          </div>
+          <div class="block_4 flex-row">
+            <div class="section_3 flex-row">
+              <img
+                class="label_6"
+                referrerpolicy="no-referrer"
+                src="./img/SketchPngece5c673e21c8ec3e77cb3c7a50cd8e58bf94cb279c8099f59beac4c9ba93661.png"
+              />
+              <!-- <span class="text_2">12345678</span> -->
+              <span class="text_2"><input id="input_pwd" type="password" style="width: 100%;height: 50px;font-size: 30pt;"/></span>
+              <!-- <img
+              class="label_5"
+                referrerpolicy="no-referrer"
+                src="./img/SketchPngf40cd25131b0c8efcb1227ac299866fb550d55e601869495c45b9986398cfa2d.png"
+              /> -->
+              <!-- <img
+                class="label_7"
+                referrerpolicy="no-referrer"
+                src="./img/SketchPng66fcf2b5c2f9bb1b01d1a0829e9c92597acf5f2a45fa17020a3e1633a3a80450.png"
+              /> -->
+            </div>
+          </div>
+          <div class="block_5 flex-row">
+            <!-- <img
+              class="label_8"
+              referrerpolicy="no-referrer"
+              src="./img/SketchPngffcb7cd3faba81474262981a07cb6379cc415cbe25b77174a37340850a63acad.png"
+            /> -->
+            <div class="image-text_1 flex-row justify-between">
+              <!-- <img
+                class="label_9"
+                referrerpolicy="no-referrer"
+                src="./img/SketchPngdb4baacb5afac0fefd4d82dfeff6631c4271dac36f4ef3a290e53ed07e041947.png"
+              /> -->
+              <input type="checkbox" style="width: 30px;height: 30px;" >
+              <span class="text-group_1">记住用户名/密码</span>
+            </div>
+            <button></button><span class="text_3">忘记密码</span></button>
+          </div>
+          <div class="block_6 flex-row">
+            <div class="text-wrapper_1 flex-col">
+              <!-- <span class="text_4">登录</span> -->
+              <button id="LoginBtn"><span style="font-size:xx-large;">登陆</span></button>
+            </div>
+          </div>
+          <div class="block_7 flex-row">
+            <div class="text-wrapper_2 flex-col">
+              <!-- <span class="text_5">注册</span> -->
+              <button onclick="location.href='/Reg/index.html'"><span class="text_5">注册</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
