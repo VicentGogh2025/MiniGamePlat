@@ -162,10 +162,13 @@ function LoginUser(){
                     }
 
                      console.log('reg Success:', response);
-                  
+                     const timestampInSeconds = Math.floor(Date.now() / 1000);
+                    // var r = typeof response.data
+                    // console.log('response.data:'+response.data);
+                     window.localStorage.setItem(timestampInSeconds, JSON.stringify(response.data));
                     // window.location.href = "/web-desktop/index.html";
-                     window.location.href = "/games/luckybomber/game.html";
-                     window.postMessage({ key: response.data }, 'http://127.0.0.1:5500/games/luckybomber/game.html');
+                     window.location.href = "/games/CocoBomber/index.html?uk="+timestampInSeconds;
+                    // window.postMessage({ key: response.data }, 'http://127.0.0.1:5500/games/luckybomber/game.html');
                  },
                  error: function(xhr, status, error) {
                      // 失败回调函数
