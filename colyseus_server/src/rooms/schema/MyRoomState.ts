@@ -1,4 +1,4 @@
-import { Schema, Context, type,ArraySchema } from "@colyseus/schema";
+import { Schema, Context, type,ArraySchema, MapSchema } from "@colyseus/schema";
 import { number } from "@colyseus/schema/lib/encoding/decode";
 
 export class Player extends Schema {
@@ -11,11 +11,16 @@ export class Player extends Schema {
   @type("string")
   name: string;
 
-  @type("number")
-  x: number;
+  @type("string")
+  avatar: string;
 
   @type("number")
-  y: number;
+  seatSeq: number;
+  // @type("number")
+  // x: number;
+
+  // @type("number")
+  // y: number;
 
   @type("number")
   coins: number;
@@ -36,6 +41,5 @@ export class MyRoomState extends Schema {
   // @type([number]) hArrayOfGrids: ArraySchema<number> = new ArraySchema<number>();
   // @type("uint8") wArrayOfGrids: ArraySchema<number> = new ArraySchema<number>();
 
-  @type([ Player ])
-  arrayOfPlayers: ArraySchema<Player> = new ArraySchema<Player>();
+  @type({ map: Player }) players = new MapSchema<Player>();
 }
