@@ -36,7 +36,7 @@ export class MyRoomState extends Schema {
 
   @type("string") mySynchronizedProperty: string = "Hello world";
 
-  @type("uint8") countDownTime: number = -1;
+  @type("number") countDownTime: number = -1;
 
   // @type([number]) hArrayOfGrids: ArraySchema<number> = new ArraySchema<number>();
   // @type("uint8") wArrayOfGrids: ArraySchema<number> = new ArraySchema<number>();

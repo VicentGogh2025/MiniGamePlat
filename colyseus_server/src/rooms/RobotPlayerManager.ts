@@ -59,13 +59,15 @@ public async removeAllRobotPlayer(){
     private async fetchRobotPlayer(count:number): Promise<any> {
         try {
             const getUrl = GlobalConfigManager.getRobotsPlayerGetUrl(count);
+            console.log("getUrl=="+getUrl);
             const response = await axios.get(getUrl);
             if(response.data.code!=0)
                 throw new Error("code is not 0 see message",response.data.message);
-                
-            response.data.robots.forEach((robot: any) => {
+            console.log("fetchrobot=="+response.data);    
+            response.data.data.robots.forEach((robot: any) => {
                 this.RobotPlayerInUsedArray.push(robot);
             });
+            console.log("this.RobotPlayerInUsedArray=="+this.RobotPlayerInUsedArray.length)
             return this.RobotPlayerInUsedArray;
         } catch (error) {
             console.error("Error fetching robot player:", error);
