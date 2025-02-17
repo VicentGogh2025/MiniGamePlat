@@ -125,59 +125,66 @@ function userTel(inputid, spanid) {
 
 };
 
+function loginInByEamil(email,pwd){
+    if(pwd.length==0){
+        console.log("error===input_pwd===")
+        return
+    }
+    res = EmailValidater(email)
+    if(!res){
+    // $("#vEmail").attr('placeholder',"邮箱不符合规格")
+     $("#tip_span").html("邮箱不符合规格");
+     console.log("error===input_email===")
+     return
+    }
+    var formData = new FormData();
+    formData.append('username',email)
+    formData.append('password',pwd)
+    console.log("====email==="+email);
+    console.log("====pwd==="+pwd);
+    $.ajax({
+             type: 'POST',
+             url: 'https://api.luckybooms.com/api/index/login', // 替换为你的服务器端点
+             data: formData,
+             contentType: false, // 不设置内容类型，由FormData自己确定
+             processData: false, // 不处理发送的数据，因为数据是FormData对象，不需要转换
+             success: function(response) {
+                 // 成功回调函数
+                if(response.code == 0){
+                    $("#tip_span").html(response.message);
+                }
+
+                 console.log('reg Success:', response);
+                 const timestampInSeconds = Math.floor(Date.now() / 1000);
+                // var r = typeof response.data
+                // console.log('response.data:'+response.data);
+                 window.localStorage.setItem(timestampInSeconds, JSON.stringify(response.data));
+                // window.location.href = "/web-desktop/index.html";
+                 window.location.href = "../games/CocoBomber/index.html?uk="+timestampInSeconds;
+                // window.postMessage({ key: response.data }, 'http://127.0.0.1:5500/games/luckybomber/game.html');
+             },
+             error: function(xhr, status, error) {
+                 // 失败回调函数
+                 console.log('reg Error:', status, error);
+             }
+         });
+}
+
 function LoginUser(){
     $("#LoginBtn").click(function(){
-        var formData = new FormData();
+   
        
         var vPwd = $("#input_pwd").val();
         var vEmail = $("#input_email").val();
        // var vNickname = $("#input_account").val();
       //  var res = userName("#input_account","#tip_span")
 
-        if(vPwd.length==0){
-            console.log("error===input_pwd===")
-            return
-        }
-        res = EmailValidater(vEmail)
-        if(!res){
-        // $("#vEmail").attr('placeholder',"邮箱不符合规格")
-         $("#tip_span").html("邮箱不符合规格");
-         console.log("error===input_email===")
-         return
-        }
-        formData.append('username',vEmail)
-        formData.append('password',vPwd)
-        console.log("====email==="+vEmail);
-        console.log("====pwd==="+vPwd);
-        $.ajax({
-                 type: 'POST',
-                 url: 'https://api.luckybooms.com/api/index/login', // 替换为你的服务器端点
-                 data: formData,
-                 contentType: false, // 不设置内容类型，由FormData自己确定
-                 processData: false, // 不处理发送的数据，因为数据是FormData对象，不需要转换
-                 success: function(response) {
-                     // 成功回调函数
-                    if(response.code == 0){
-                        $("#tip_span").html(response.message);
-                    }
-
-                     console.log('reg Success:', response);
-                     const timestampInSeconds = Math.floor(Date.now() / 1000);
-                    // var r = typeof response.data
-                    // console.log('response.data:'+response.data);
-                     window.localStorage.setItem(timestampInSeconds, JSON.stringify(response.data));
-                    // window.location.href = "/web-desktop/index.html";
-                     window.location.href = "/games/CocoBomber/index.html?uk="+timestampInSeconds;
-                    // window.postMessage({ key: response.data }, 'http://127.0.0.1:5500/games/luckybomber/game.html');
-                 },
-                 error: function(xhr, status, error) {
-                     // 失败回调函数
-                     console.log('reg Error:', status, error);
-                 }
-             });
+      loginInByEamil(vEmail,vPwd);
   
     });
 }
+
+
 
 function RegisterUser(){
     $("#RegBtn").click(function(){
@@ -242,6 +249,7 @@ function RegisterUser(){
                      // 成功回调函数
                      if(response.code==200){
                         console.log('reg Success:', response);
+                        loginInByEamil(vEmail,vPwd);
                      }else{
                         console.log('reg failed:', response);
                         $("#tip_span").html(response.message)
