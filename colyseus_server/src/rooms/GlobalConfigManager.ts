@@ -21,7 +21,7 @@ export class GlobalConfigManager{
     }
 
     public static getRobotsPlayerReleaseUrl():string{
-        return `${GlobalConfigManager.RobotURLPrefix}/release_robots`;
+        return `${GlobalConfigManager.RobotURLPrefix}/release_robot`;
     }
 }
 // {

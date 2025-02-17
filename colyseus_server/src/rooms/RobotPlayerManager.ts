@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { GlobalConfigManager } from './GlobalConfigManager';
 export class RobotPlayerManager{
-    private static instance: RobotPlayerManager;
+  //  private static instance: RobotPlayerManager;
  // 私有构造函数，防止外部实例化
- private constructor() {}
+ //private constructor() {}
 
  // 获取单例实例的方法
- public static getInstance(): RobotPlayerManager {
-     if (!RobotPlayerManager.instance) {
-         RobotPlayerManager.instance = new RobotPlayerManager();
-     }
-     return RobotPlayerManager.instance;
- }
+//  public static getInstance(): RobotPlayerManager {
+//      if (!RobotPlayerManager.instance) {
+//          RobotPlayerManager.instance = new RobotPlayerManager();
+//      }
+//      return RobotPlayerManager.instance;
+//  }
 
  
 // 		"id": 2099,
@@ -83,12 +83,13 @@ public async removeAllRobotPlayer(){
             const postUrl = GlobalConfigManager.getRobotsPlayerReleaseUrl();
             const response = await axios.post(postUrl, {
                 game_key: GlobalConfigManager.gameKey,
-                ids: idArray
+                robot_ids: idArray
             }, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log("returnRobotPlayer=="+JSON.stringify(response.data));
             return response.data;
         } catch (error) {
             console.error("Error returning robot player:", error);

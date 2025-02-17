@@ -25,8 +25,14 @@ export class Player extends Schema {
   @type("number")
   coins: number;
 
+  @type("number")
+  propCoins: number = 0;
+
   @type("boolean")
   isReady: boolean;
+
+  @type("number")//0:waiting, 1:playing, 2:win, 3:lose
+  status: number = 0;
 
   @type("boolean")
   isOnline: boolean;
@@ -38,6 +44,20 @@ export class MyRoomState extends Schema {
 
   @type("number") countDownTime: number = -1;
 
+  @type("number") maxZoomPropCount: number = 2;
+
+  @type("number") maxNextPropCount: number = 2;
+
+  @type("number") maxCoinPropCount: number = 1;
+
+  @type("number") maxBombCount: number = 10;
+  @type("number") bombCount: number = 0;
+  @type("number") coinPropCount: number = 0;
+  @type("number") nextPropCount: number = 0;
+  @type("number") zoomPropCount: number = 0;
+
+  @type("string") movingPlayerSessionId:string;
+  
   // @type([number]) hArrayOfGrids: ArraySchema<number> = new ArraySchema<number>();
   // @type("uint8") wArrayOfGrids: ArraySchema<number> = new ArraySchema<number>();
 
