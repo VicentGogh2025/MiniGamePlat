@@ -44,9 +44,9 @@ export class MyRoomState extends Schema {
 
   @type("number") countDownTime: number = -1;
 
-  @type("number") maxZoomPropCount: number = 2;
+  @type("number") maxZoomPropCount: number = 20;
 
-  @type("number") maxNextPropCount: number = 2;
+  @type("number") maxNextPropCount: number = 20;
 
   @type("number") maxCoinPropCount: number = 1;
 

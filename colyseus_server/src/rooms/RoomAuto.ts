@@ -9,12 +9,16 @@ interface Bomb2dUnit {
   moveY: number;
   userId: number;
 }
+class PropData{
+  propTypeStr: string;
+  count: number;
+}
 export class RoomAuto extends Room<MyRoomState> {
   maxClients = 5;
   betCoins = 10;
-  playerGlobalReadyTime: number = 3000;
+  playerGlobalReadyTime: number = 10;
   playerMatchTime: number = 5;
-  playerMoveCDTime = 5;
+  playerMoveCDTime = 10;
   currentGamePhrase = 1;//1 is waiting for player,2 ready for room,3 startGame,4 gameover
   Bomb2dArray: Bomb2dUnit[][] = [];
   game_key = "abc123xyz789";
@@ -23,6 +27,7 @@ export class RoomAuto extends Room<MyRoomState> {
   curPlayerIndex = 0;
   curRobotManager: RobotPlayerManager = new RobotPlayerManager();
   c2sMovedSessionId = "";
+  mapPropData: Map<string, PropData[]> = new Map<string, PropData[]>();
   onCreate(options: any) {
     this.setState(new MyRoomState());
     if (options.maxClients) {
@@ -33,10 +38,12 @@ export class RoomAuto extends Room<MyRoomState> {
     }
     this.currentGamePhrase = 1;
     this.startCountdown(this.playerMatchTime, () => {
-
-      this.addRobotsPlayer(() => {
+      const pc = this.getPlayerCount();
+      if (pc < this.maxClients) {
+        const count = this.maxClients - pc;
+      this.addRobotsPlayer(count,() => {
         this.startCurrentGamePhrase2();
-      });
+      });}
       // console.log("===match players time out!" + res);
       // if (res) {
 
@@ -84,16 +91,35 @@ export class RoomAuto extends Room<MyRoomState> {
             this.excuteNextPlayerMove(this.curPlayerIndex);
           }
         });
-        // console.log("nextIndex====before==" + this.curPlayerIndex);
-        // const nextIndex = this.findNextActiveIndexBySessionId(client.sessionId);
-        // console.log("nextIndex====after==" + nextIndex);
-        // this.excuteNextPlayerMove(this.curPlayerIndex);
-        // this.curPlayerIndex++;
-        // this.state.movingPlayerSessionId = this.sortedPlayerList[this.curPlayerIndex].sessionId;
-        // this.startCountdown(this.playerMoveCDTime, () => {
-        //   this.excuteEveryPlayerMove(this.curPlayerIndex);
+      }else if (jsonObj.cmd == "C2S_usingProp") {
+       
+         const propTypeStr =  jsonObj.propTypeStr;
+         console.log("==C2S_usingProp==="+propTypeStr);
+         const hasProp = this.PlayerHasProp(client.sessionId,propTypeStr);
+         if(!hasProp)
+          return;
 
-        // });
+         console.log("==C2S_usingProp===hasProp==="+propTypeStr);
+         switch(propTypeStr){
+          // case "Bomb":
+          // break;
+          case "Next":
+
+              this.stopCountdown();//cancel current countdown
+              this.findNextActivePlayer(this.curPlayerIndex);
+             this.excuteNextPlayerMove(this.curPlayerIndex);
+             client.send("S2C", JSON.stringify({ cmd: "S2C_usingProp", targetPropTypeStr:propTypeStr}));
+             this.removeProp2Player(client.sessionId,propTypeStr);
+          break;
+          case "Zoom":
+            const moveX = jsonObj.moveX;
+            const moveY = jsonObj.moveY;
+            const pt = this.Bomb2dArray[moveX][moveY].propType;
+            client.send("S2C", JSON.stringify({ cmd: "S2C_usingProp", targetPropTypeStr:propTypeStr,openedPropTypeStr:pt, moveX:moveX, moveY:moveY }));
+            this.removeProp2Player(client.sessionId,propTypeStr);
+          break;
+         }
+
       }
       // }else if(jsonObj.cmd == "C2S_playerUseProp"){ 
       // }
@@ -116,6 +142,10 @@ export class RoomAuto extends Room<MyRoomState> {
   //  this.testMatrix();
   }
 
+  getPlayerCount():number{
+    return this.state.players.size;
+  }
+
   changeMovingPlayerSessionId(sessionId: string) {
     this.state.movingPlayerSessionId = sessionId;
     this.c2sMovedSessionId="";
@@ -134,12 +164,13 @@ export class RoomAuto extends Room<MyRoomState> {
     }
     return -1;
   }
-  addRobotsPlayer(aftetAddAction: () => void) {
+  addRobotsPlayer(count:number,aftetAddAction: () => void) {
     if (this.clients.length > 0) {
 
-      let count = this.maxClients - this.clients.length;
+      //let count = this.maxClients - this.clients.length;
       if (count <= 0)//说明当前人数已经满了，不需要从超时这里开始下一阶段
         return false;
+      console.log("will add robot player count=="+count);
       this.curRobotManager.addRobotPlayer(count).then((data => {
         // console.log("parray length==" + data.length);
         if (data && data.length > 0) {
@@ -183,17 +214,11 @@ export class RoomAuto extends Room<MyRoomState> {
     });
 
     if (isAllReady) {
-      //this.state.countDownTime = 10;
-      // this.broadcast("S2C", JSON.stringify({ cmd: "S2C_allReady" }));
+      this.stopCountdown();
       this.startCurrentGamePhrase3();
       return;
     }
 
-    // this.state.arrayOfPlayers.forEach((player) => {
-    //   if (player.sessionId === client.sessionId) {
-    //     player.isReady = isReady;
-    //   }
-    // });
   }
 
   findUserIdBySessionId(sessionId: string) {
@@ -264,9 +289,10 @@ export class RoomAuto extends Room<MyRoomState> {
     this.currentGamePhrase = 2;
 
     this.startCountdown(this.playerGlobalReadyTime, () => {
-
-      if (this.clients.length < this.maxClients) {
-        this.addRobotsPlayer(() => {
+      let playerCount = this.getPlayerCount();
+      
+      if (playerCount < this.maxClients) {
+        this.addRobotsPlayer(playerCount,() => {
           this.state.players.forEach((player) => {
             if (player.isReady == false)
               player.isReady = true;
@@ -343,35 +369,9 @@ export class RoomAuto extends Room<MyRoomState> {
         this.excuteNextPlayerMove(0);
       }, 2000);
 
-
-      // let index = 0;
-      // let curPlayer: Player = this.sortedPlayerList[index];
-      // this.state.movingPlayerSessionId = curPlayer.sessionId;
-
-      // this.startCountdown(this.playerMoveCDTime, () => {
-      //   this.excuteNextPlayerMove(1);
-
-      // });
-
     } else {
       this.broadcast("S2C", JSON.stringify({ cmd: "S2C_startGameFailed" }));
     }
-
-
-
-    //todo 同步所有玩家的金币一次，并且按照次序计时
-
-    // this.startCountdown(this.playerGlobalReadyTime, () => {
-
-    //   this.addRobotsPlayer();
-
-    //   this.state.players.forEach((player) => {
-    //     if(player.isReady == false)
-    //          player.isReady = true;
-    //   });
-    //   this.startCurrentGamePhrase3();
-    //   //whenallready than start game
-    // });
   }
   ///to excuteNextPlayerTimeoutMove
   excuteNextPlayerMove(index: number) {
@@ -397,6 +397,55 @@ export class RoomAuto extends Room<MyRoomState> {
     });
   }
 
+  PlayerHasProp(sessionId:string, propTypeStr:string):boolean{
+    if(this.mapPropData.has(sessionId)){
+      let propDataArray = this.mapPropData.get(sessionId);
+      for(let pd of propDataArray){
+        if(pd.propTypeStr == propTypeStr){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  removeProp2Player(sessionId:string, propTypeStr:string){
+    if(this.mapPropData.has(sessionId)){
+      let propDataArray = this.mapPropData.get(sessionId);
+      for(let pd of propDataArray){
+        if(pd.propTypeStr == propTypeStr){
+          pd.count--;
+          if(pd.count == 0){
+            propDataArray.splice(propDataArray.indexOf(pd),1);
+          }
+          return;
+        }
+      }
+    }
+  }
+
+  assignProp2Player(sessionId:string, propTypeStr:string) {
+    if(this.mapPropData.has(sessionId)){
+      let propDataArray = this.mapPropData.get(sessionId);
+      for(let pd of propDataArray){
+        if(pd.propTypeStr == propTypeStr){
+          pd.count++;
+         // this.mapPropData.set(sessionId,propDataArray);
+          return;
+        }
+      }
+     // this.mapPropData.set(sessionId,pd);
+    }else{
+      this.mapPropData.set(sessionId,new Array<PropData>());
+      let pd = new PropData();  pd.propTypeStr = propTypeStr; pd.count = 1;
+      this.mapPropData.get(sessionId).push(pd);
+      return;
+    }
+  //    let pd = this.mapPropData.get(sessionId);
+  //    pd.count++;
+  //    this.mapPropData.set(sessionId,pd);
+  }
+
   async openGridByPlayerMove(moveX:number,moveY:number): Promise<boolean> {
     let curPlayer: Player = this.sortedPlayerList[this.curPlayerIndex];
     let bu = this.Bomb2dArray[moveX][moveY];
@@ -408,10 +457,14 @@ export class RoomAuto extends Room<MyRoomState> {
       this.state.bombCount++;
       curPlayer.status = 3;
     }
-    if (bu.propType == "Next")
+    if (bu.propType == "Next"){
       this.state.nextPropCount++;
-    if (bu.propType == "Zoom")
+      this.assignProp2Player(curPlayer.sessionId,"Next");
+    }
+    if (bu.propType == "Zoom"){
       this.state.zoomPropCount++;
+      this.assignProp2Player(curPlayer.sessionId,"Zoom");
+    }
     if (bu.propType == "Coin") {
       this.state.coinPropCount++;
       curPlayer.propCoins += 1;
@@ -802,10 +855,29 @@ export class RoomAuto extends Room<MyRoomState> {
     }
   }
 
+  isLeftRobot(exclusiveSessionId:string):boolean{
+    let res = true;
+    this.state.players.forEach((player, sessionId) => {
+      if (sessionId != exclusiveSessionId && player.sessionId != player.userId.toString()) {
+
+        res = false
+        return;
+      }
+    });
+    return res;
+  }
 
   //中途有人离开则需要被机器人接管，自动下注，允许断线重连进来继续玩
   onLeave(client: Client, consented: boolean) {
     console.log(client.sessionId, "left!");
+    const leftAllRpobot = this.isLeftRobot(client.sessionId);
+
+    if(leftAllRpobot){
+      this.stopCountdown();
+      this.disconnect();
+      return;
+     // this.state.countDownTime = 0;
+    }
     if (this.currentGamePhrase == 1 || this.currentGamePhrase == 2) {
       this.state.players.delete(client.sessionId);
     }

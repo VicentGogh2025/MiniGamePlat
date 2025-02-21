@@ -137,7 +137,7 @@ function loginInByEamil(email,pwd){
      console.log("error===input_email===")
      return
     }
-    var formData = new FormData();
+         var formData = new FormData();
     formData.append('username',email)
     formData.append('password',pwd)
     console.log("====email==="+email);
