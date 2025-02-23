@@ -401,7 +401,7 @@ export class RoomAuto extends Room<MyRoomState> {
     if(this.mapPropData.has(sessionId)){
       let propDataArray = this.mapPropData.get(sessionId);
       for(let pd of propDataArray){
-        if(pd.propTypeStr == propTypeStr){
+        if(pd.propTypeStr == propTypeStr&&pd.count>0){
           return true;
         }
       }
@@ -415,9 +415,12 @@ export class RoomAuto extends Room<MyRoomState> {
       for(let pd of propDataArray){
         if(pd.propTypeStr == propTypeStr){
           pd.count--;
-          if(pd.count == 0){
-            propDataArray.splice(propDataArray.indexOf(pd),1);
+          if(pd.count < 0){
+            pd.count = 0;
+           // console.log("in====removeProp2Player===pd.count < 0==="+propTypeStr);
+          //  propDataArray.splice(propDataArray.indexOf(pd),1);
           }
+          console.log("in====removeProp2Player===pd.count < 0==="+propTypeStr);
           return;
         }
       }
@@ -425,6 +428,7 @@ export class RoomAuto extends Room<MyRoomState> {
   }
 
   assignProp2Player(sessionId:string, propTypeStr:string) {
+    console.log("into====assignProp2Player===session"+sessionId);
     if(this.mapPropData.has(sessionId)){
       let propDataArray = this.mapPropData.get(sessionId);
       for(let pd of propDataArray){
@@ -434,10 +438,20 @@ export class RoomAuto extends Room<MyRoomState> {
           return;
         }
       }
-     // this.mapPropData.set(sessionId,pd);
+      let pd = new PropData();
+      pd.propTypeStr = propTypeStr;
+      pd.count = 1;
+      propDataArray.push(pd);
+      // for(let pd of propDataArray){
+      //  // console.log("in====assignProp2Player===session"+sessionId);
+      //   console.log("in====assignProp2Player===pd.propTypeStr==="+pd.propTypeStr);
+      //   console.log("in====assignProp2Player===pd.count==="+pd.count);
+      // }
     }else{
       this.mapPropData.set(sessionId,new Array<PropData>());
-      let pd = new PropData();  pd.propTypeStr = propTypeStr; pd.count = 1;
+      let pd = new PropData();  
+      pd.propTypeStr = propTypeStr;
+       pd.count = 1;
       this.mapPropData.get(sessionId).push(pd);
       return;
     }
@@ -521,10 +535,14 @@ export class RoomAuto extends Room<MyRoomState> {
       this.state.bombCount++;
       curPlayer.status = 3;
     }
-    if (bu.propType == "Next")
+    if (bu.propType == "Next"){
       this.state.nextPropCount++;
-    if (bu.propType == "Zoom")
+      this.assignProp2Player(curPlayer.sessionId,"Next");
+    }
+    if (bu.propType == "Zoom"){
       this.state.zoomPropCount++;
+      this.assignProp2Player(curPlayer.sessionId,"Zoom");
+    }
     if (bu.propType == "Coin") {
       this.state.coinPropCount++;
       curPlayer.propCoins += 1;
@@ -829,7 +847,7 @@ export class RoomAuto extends Room<MyRoomState> {
     this.state.countDownTime = cdTime; // Set initial countdown time
     this.clock.start();
     this.delayedInterval = this.clock.setInterval(() => {
-      console.log("Time now " + this.state.countDownTime);
+    //  console.log("Time now " + this.state.countDownTime);
       if (this.state.countDownTime > 0)
         this.state.countDownTime -= 1;
     }, 1000);
