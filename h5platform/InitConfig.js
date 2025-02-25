@@ -140,6 +140,7 @@ function loginInByEamil(email,pwd){
          var formData = new FormData();
     formData.append('username',email)
     formData.append('password',pwd)
+    formData.append('type',3)
     console.log("====email==="+email);
     console.log("====pwd==="+pwd);
     $.ajax({
@@ -157,7 +158,7 @@ function loginInByEamil(email,pwd){
                  console.log('reg Success:', response);
                  const timestampInSeconds = Math.floor(Date.now() / 1000);
                 // var r = typeof response.data
-                // console.log('response.data:'+response.data);
+                 console.log('response.data:'+response.data);
                  window.localStorage.setItem(timestampInSeconds, JSON.stringify(response.data));
                 // window.location.href = "/web-desktop/index.html";
                  window.location.href = "../games/CocoBomber/index.html?uk="+timestampInSeconds;
