@@ -1,0 +1,20 @@
+{
+  "name": "CocoBomber",
+  "uuid": "bc9ede77-2c36-440b-bfee-048e2b891123",
+  "creator": {
+    "version": "3.8.5"
+  },
+  "panels": {
+        "default": {
+            "title": "hw",
+            "main": "./panel.js"
+        }
+    },
+    "contributions": {
+        "messages": {
+            "console": {
+                "methods": ["default.console"]
+            }
+        }
+    }
+}
